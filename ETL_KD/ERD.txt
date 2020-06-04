@@ -1,0 +1,32 @@
+salaries
+-
+Season FK >-< seasons.season
+"Club (grouped)" FK >- club_map.long_name
+Club
+"First Name"
+"Last Name"
+Position
+"Total Compensation"
+"Base Salary"
+
+seasons
+-
+"#"
+Club FK >- club_map.short_name
+PTS
+PPG
+GP
+W
+L
+T
+GF
+GA
+GD
+"(H)W-L-T"
+"(A)W-L-T"
+season
+
+club_map
+-
+long_name varchar(255)
+short_name varchar(255)
