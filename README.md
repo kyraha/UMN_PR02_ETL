@@ -15,13 +15,13 @@ An extensive research on MLS players' salaries led us to a data sheet of detaile
 
 ### 2. MLS Soccer
 
-The games stats per season can be found at MLSsoccer.com website, categorized by seasons. We pulled the data by iterating through seasons using Pandas.
+The games stats per season can be found at MLSsoccer.com website, categorized by seasons. We pulled the data by iterating through seasons using Pandas, creating season-specific URLs that could then be scraped for that season's relevant data.
 
-## 3. TRANSFORM
+## TRANSFORM
 
 Since we have data from different sources (Data.world & MLSsoccer.com), we realized we needed to join the two datasets using a mapping dictionary. The Salaries table refers to the soccer clubs by their abbreviations while the Seasons table uses full names of the clubs. Because there is only a couple of dozen clubs in MLS league the mapping table could easily be composed manually. All that was needed was a "Select" query on unique names and unique abbreviations from the two tables in order to match them together. See the "create table club_map" part in the notebook.
 
-## 4. LOAD
+## LOAD
 
 For storing data together for future analysis, an sqlite database was chosen as the most versatile database engine.
 
