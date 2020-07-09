@@ -24,12 +24,15 @@ def zeus():
     data = []
 
     sample = engine.execute("""
-        select s."First Name", s."Last Name",
-        c.Club, c.pts, c.season
+        select --s."First Name" as firstName, s."Last Name" as lastName,
+        c.Club, c.pts, c.season, c.W, c.L, c.GF, c.GA,
+        avg(s."Total Compensation") as totalCompensation,
+        avg(s."Base Salary") as baseSalary
         from seasons c
         join club_map m on m.long_name = c.Club
         join salaries s on s."Club (grouped)" = m.short_name
         where c.season = s.Season
+        group by c.Club, c.pts, c.season, c.W, c.L, c.GF, c.GA
     """)
 
     for row in sample:
