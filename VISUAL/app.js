@@ -26,14 +26,15 @@ var chartGroup = svg.append("g")
 // Initial Params
 var chosenXAxis = "season";
 var chosenYAxis = "PTS";
+var chosenZAxis = "totalCompensation";
 
 // function used for updating x-scale var upon click on axis label
-function xScale(hairData, chosenXAxis) {
+function xScale(mlsData, chosenXAxis) {
   // create scales
-//   console.log(d3.max(hairData, d => d[chosenXAxis]));
+//   console.log(d3.max(mlsData, d => d[chosenXAxis]));
   var xLinearScale = d3.scaleLinear()
-    .domain([d3.min(hairData, d => d[chosenXAxis]),
-      d3.max(hairData, d => d[chosenXAxis])
+    .domain([d3.min(mlsData, d => d[chosenXAxis]),
+      d3.max(mlsData, d => d[chosenXAxis])
     ])
     .range([0, width]);
 
@@ -41,17 +42,27 @@ function xScale(hairData, chosenXAxis) {
 
 }
 
-function yScale(hairData, chosenYAxis) {
-    // create scales
-    var yLinearScale = d3.scaleLinear()
-      .domain([d3.min(hairData, d => d[chosenYAxis]) * 0.8,
-        d3.max(hairData, d => d[chosenYAxis]) * 1.2
-      ])
-      .range([height, 0]);
-  
-    return yLinearScale;
-  
-  }
+function yScale(mlsData, chosenYAxis) {
+  // create scales
+  var yLinearScale = d3.scaleLinear()
+    .domain([d3.min(mlsData, d => d[chosenYAxis]) * 0.8,
+      d3.max(mlsData, d => d[chosenYAxis]) * 1.2
+    ])
+    .range([height, 0]);
+
+  return yLinearScale;
+
+}
+
+function zScale(mlsData, chosenZAxis) {
+  var zLinearScale = d3.scaleLinear()
+    .domain([d3.min(mlsData, d => d[chosenZAxis]),
+      d3.max(mlsData, d => d[chosenZAxis])
+    ])
+    .range([3, 75]);
+    return zLinearScale
+}
+
 // function used for updating xAxis var upon click on axis label
 function renderAxes(newXScale, xAxis) {
   var bottomAxis = d3.axisBottom(newXScale);
@@ -65,11 +76,11 @@ function renderAxes(newXScale, xAxis) {
 
 // function used for updating circles group with a transition to
 // new circles
-function renderCircles(circlesGroup, newXScale, chosenXAxis) {
+function renderCircles(circlesGroup, newZScale, chosenZAxis) {
 
   circlesGroup.transition()
     .duration(1000)
-    .attr("cx", d => newXScale(d[chosenXAxis]));
+    .attr("r", d => newZScale(d[chosenZAxis]));
 
   return circlesGroup;
 }
@@ -116,11 +127,11 @@ function money(str) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.json("zeus.json").then(function(hairData, err) {
+d3.json("zeus.json").then(function(mlsData, err) {
   if (err) throw err;
 
   // parse data
-  hairData.forEach(function(data) {
+  mlsData.forEach(function(data) {
     data.GA = +data.GA;
     data.GF = +data.GF;
     data.W = +data.W;
@@ -129,13 +140,13 @@ d3.json("zeus.json").then(function(hairData, err) {
     data.baseSalary = +data.baseSalary;
     data.totalCompensation = +data.totalCompensation;
   });
-  console.log(hairData);
+  console.log(mlsData);
 //   return;
 
   // xLinearScale function above csv import
-  var xLinearScale = xScale(hairData, chosenXAxis);
-  var yLinearScale = yScale(hairData, chosenYAxis);
-
+  var xLinearScale = xScale(mlsData, chosenXAxis);
+  var yLinearScale = yScale(mlsData, chosenYAxis);
+  var zLinearScale = zScale(mlsData, chosenZAxis);
 
   // Create initial axis functions
   var bottomAxis = d3.axisBottom(xLinearScale);
@@ -153,12 +164,12 @@ d3.json("zeus.json").then(function(hairData, err) {
 
   // append initial circles
   var circlesGroup = chartGroup.selectAll("circle")
-    .data(hairData)
+    .data(mlsData)
     .enter()
     .append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d[chosenYAxis]))
-    .attr("r", d => d.totalCompensation/20000)
+    .attr("r",  d => zLinearScale(d[chosenZAxis]))
     .attr("fill", "pink")
     .attr("opacity", d => `${1.0-d.totalCompensation/1000000}`);
 
@@ -169,13 +180,20 @@ d3.json("zeus.json").then(function(hairData, err) {
   var hairLengthLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 20)
+    .attr("value", "season") // value to grab for event listener
+    .classed("active", true)
+    .text("Season");
+
+  var totalCompensation = labelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 40)
     .attr("value", "totalCompensation") // value to grab for event listener
     .classed("active", true)
     .text("Total Compensation (average)");
 
-  var albumsLabel = labelsGroup.append("text")
+  var baseSalary = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 40)
+    .attr("y", 60)
     .attr("value", "baseSalary") // value to grab for event listener
     .classed("inactive", true)
     .text("Base Salary (average)");
@@ -197,40 +215,40 @@ d3.json("zeus.json").then(function(hairData, err) {
     .on("click", function() {
       // get value of selection
       var value = d3.select(this).attr("value");
-      if (value !== chosenXAxis) {
+      if (value !== "season" && value !== chosenZAxis) {
 
         // replaces chosenXAxis with value
-        chosenXAxis = value;
+        chosenZAxis = value;
 
         // console.log(chosenXAxis)
 
         // functions here found above csv import
         // updates x scale for new data
-        xLinearScale = xScale(hairData, chosenXAxis);
+        zLinearScale = zScale(mlsData, chosenZAxis);
 
         // updates x axis with transition
-        xAxis = renderAxes(xLinearScale, xAxis);
+        //xAxis = renderAxes(zLinearScale, xAxis);
 
         // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+        circlesGroup = renderCircles(circlesGroup, zLinearScale, chosenZAxis);
 
         // updates tooltips with new info
-        circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+        circlesGroup = updateToolTip(chosenZAxis, circlesGroup);
 
         // changes classes to change bold text
-        if (chosenXAxis === "num_albums") {
-          albumsLabel
+        if (chosenZAxis === "totalCompensation") {
+          totalCompensation
             .classed("active", true)
             .classed("inactive", false);
-          hairLengthLabel
+          baseSalary
             .classed("active", false)
             .classed("inactive", true);
         }
         else {
-          albumsLabel
+          totalCompensation
             .classed("active", false)
             .classed("inactive", true);
-          hairLengthLabel
+          baseSalary
             .classed("active", true)
             .classed("inactive", false);
         }
