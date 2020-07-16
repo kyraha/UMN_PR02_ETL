@@ -1,4 +1,4 @@
-let link = "https://mls-salary-mk.herokuapp.com/season/2017";
+let link = "/season/2017";
 function init(){
 let selected = d3.select("#selSeason")
   d3.json(link).then(function(data) {

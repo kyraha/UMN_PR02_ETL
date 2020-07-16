@@ -14,7 +14,8 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     # Return template and data
-    return "Hello World!<br/><a href=zeus>Zeus</a>"
+    # return "Hello World!<br/><a href=zeus>Zeus</a>"
+    return render_template("index.html")
 
 
 # Route that will trigger the scrape function
