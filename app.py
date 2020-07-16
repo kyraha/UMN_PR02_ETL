@@ -57,7 +57,6 @@ def season(year):
         join salaries s on s."Club (grouped)" = m.short_name
         where c.season = s.Season
         and c.season = {year}
-        group by c.Club, c.pts, c.season, c.W, c.L, c.GF, c.GA
     """)
 
     for row in sample:
