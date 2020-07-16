@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, inspect
 import pandas as pd
 
-engine = create_engine("sqlite:///../ETL_KD/Resources/mlsseasons.sqlite", echo=False)
+engine = create_engine("sqlite:///ETL_KD/Resources/mlsseasons.sqlite", echo=False)
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     # Return template and data
-    return "Hello World!"
+    return "Hello World!<br/><a href=zeus>Zeus</a>"
 
 
 # Route that will trigger the scrape function
