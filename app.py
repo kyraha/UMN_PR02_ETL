@@ -48,8 +48,8 @@ def season(year):
     data = []
 
     sample = engine.execute(f"""
-        select c.Club, c.pts, c.season, c.W, c.L, c.GF, c.GA,
-        m.real_name,
+        select c.pts, c.season, c.W, c.L, c.GF, c.GA,
+        m.real_name as club,
         s."Total Compensation",
         s."Base Salary"
         from seasons c
