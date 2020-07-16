@@ -1,22 +1,24 @@
+let link = "https://mls-salary-mk.herokuapp.com/season/2017";
 function init(){
 let selected = d3.select("#selSeason")
-  d3.json("../StarterCode/samples.json").then(function(data) {
-    data.names.forEach((name)=>{
-      selected.append("option").text(name).property("value",name)
+  d3.json(link).then(function(data) {
+    console.log(data)
+    data.club.forEach((season)=>{
+      selected.append("option").text(season).property("value",season)
       
 
     })
-    makechart(data.names[0])
+    makechart(data.season[0])
   })
 };
-function optionChanged(id){
-  console.log(id)
-  makechart(id)
+function optionChanged(season){
+  console.log(season)
+  makechart(season)
 }
 init();
-function makechart(sampleid){
-  d3.json("../StarterCode/samples.json").then(function(data){
-let filteredsamples =data.samples.filter(s=>s.id==sampleid)
+function makechart(sampleclub){
+  d3.json(link).then(function(data){
+let filteredsamples =data.samples.filter(s=>s.id==sampleclub)
 let otu_ids =filteredsamples[0].otu_ids
 let otu_labels = filteredsamples[0].otu_labels
 let sample_values = filteredsamples[0].sample_values
@@ -54,10 +56,10 @@ let bubblelayout = {
 
 Plotly.newPlot("bubble",bubbledata,bubblelayout)
 
-let metadata = data.metadata.filter(s=>s.id==sampleid)[0]
+let seasondata = data.club.filter(s=>s.id==sampleclub)[0]
 let minitable = d3.select("#sample-metadata")
 minitable.html("")
-Object.entries(metadata).forEach(([key,value])=>{
+Object.entries(seasondata).forEach(([key,value])=>{
 minitable.append("h5").text(`${key}: ${value}`)
 })
   })
