@@ -43,6 +43,31 @@ def zeus():
     
     return jsonify(data)
 
+@app.route("/season/<year>")
+def season(year):
+    data = []
+
+    sample = engine.execute(f"""
+        select c.Club, c.pts, c.season, c.W, c.L, c.GF, c.GA,
+        m.real_name,
+        s."Total Compensation",
+        s."Base Salary"
+        from seasons c
+        join club_map m on m.long_name = c.Club
+        join salaries s on s."Club (grouped)" = m.short_name
+        where c.season = s.Season
+        and c.season = {year}
+        group by c.Club, c.pts, c.season, c.W, c.L, c.GF, c.GA
+    """)
+
+    for row in sample:
+        record = {}
+        for k, v in zip(sample.keys(), row):
+            record[k] = v
+        data.append(record)
+    
+    return jsonify(data)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
