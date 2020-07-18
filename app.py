@@ -50,15 +50,16 @@ def season(year):
 
     sample = engine.execute(f"""
         select c.pts, c.season, c.W, c.L, c.GF, c.GA,
+        c."#" as rank,
         m.real_name as club,
-        s."Total Compensation",
-        s."Base Salary"
+        s."Total Compensation" as totalComp,
+        s."Base Salary" as salary
         from seasons c
         join club_map m on m.long_name = c.Club
         join salaries s on s."Club (grouped)" = m.short_name
         where c.season = s.Season
-        and c.season = {year}
-    """)
+        and c.season = ?
+    """, year)
 
     for row in sample:
         record = {}
@@ -68,6 +69,50 @@ def season(year):
     
     return jsonify(data)
 
+# club = "2018; drop table blah;"
+
+@app.route("/slice/<year>/<club>")
+def season_club(year, club):
+    data = []
+
+    sample = engine.execute(f"""
+        select c.pts, c.season, c.W, c.L, c.GF, c.GA,
+        m.real_name as club,
+        s."Total Compensation" as totalComp,
+        s."Base Salary" as salary
+        from seasons c
+        join club_map m on m.long_name = c.Club
+        join salaries s on s."Club (grouped)" = m.short_name
+        where c.season = s.Season
+        and c.season = ?
+        and m.real_name = ?
+    """, year, club)
+
+    for row in sample:
+        record = {}
+        for k, v in zip(sample.keys(), row):
+            record[k] = v
+        data.append(record)
+    
+    return jsonify(data)
+
+@app.route("/clubs/<year>")
+def clubs(year):
+    data = []
+    sample = engine.execute("""
+        select c.pts, c.W, c.L, c.GF, c.GA, c.GD,
+        c."#" as rank,
+        m.real_name as club
+        from seasons c
+        join club_map m on m.long_name = c.Club
+        and c.season = ?
+    """, year)
+    for row in sample:
+        record = {}
+        for k, v in zip(sample.keys(), row):
+            record[k] = v
+        data.append(record)
+    return jsonify(data)
 
 if __name__ == "__main__":
     app.run(debug=True)

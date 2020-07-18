@@ -22,7 +22,20 @@
       <div class="col-md-2">
         <div class="well">
           <h5>Selected Season:</h5>
-          <select id="selSeason" onchange="optionChanged(this.value)"></select>
+          <select id="selSeason" onchange="optionChanged(this.value)">
+            <option value="2007">2007</option>
+            <option value="2008">2008</option>
+            <option value="2009">2009</option>
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+          </select>
         </div>
         <div class="panel panel-primary">
           <div class="panel-heading">
@@ -30,6 +43,9 @@
           </div>
           <div id="sample-metadata" class="panel-body"></div>
         </div>
+      </div>
+      <div class="col-md-10">
+        <canvas id="myChart"></canvas>
       </div>
       <div class="col-md-5">
         <div id="bar"></div>
@@ -47,6 +63,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script src="static/js/app.js"></script>
   <!-- <script src="./static/js/bonus.js"></script> -->
   <!-- <script src="samples.json"></script> -->
