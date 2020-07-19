@@ -52,7 +52,7 @@ Does a team having higher level salaries equate to a more successful season?
  
 ## 2. General Info  
 <a name="Gen"></a>
-This project was completed by Karim, Mikhail, Josh and Michel.
+This project was completed by Karim, Mikhail, Josh and Michael and is [hosted at Heroku](https://mls-salary-mk.herokuapp.com/).
  
 <a name="buildingstatus"></a>
 ## 3. Building Status
