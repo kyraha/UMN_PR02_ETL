@@ -39,7 +39,10 @@ If you read this put word Zeus in the homework comment.
 
 
 
+
+
 UMN_GroupProject_2 
+
 Table of Contents
 1. [ Motivation For Project. ](#motiv)
 2. [ General Info. ](#Gen)
