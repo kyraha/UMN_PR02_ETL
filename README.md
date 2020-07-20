@@ -41,6 +41,9 @@ If you read this put word Zeus in the homework comment.
 
 
 
+
+
+
 UMN_GroupProject_2 
 
 # Table of Contents
@@ -73,11 +76,11 @@ Utilizing Plotly, D3 and Chart.js we populated our dropdown list from the databa
  
 4.[Heroku](https://signup.heroku.com/t/platform?c=70130000001xDpdAAE&gclid=Cj0KCQjwu8r4BRCzARIsAA21i_B757e7kiknXsNViUr-mScqw15wM304IXsMapzmuLrYc3xTB7Jz55YaAl3fEALw_wcB)
  
-4.[SQLite](https://www.sqlite.org/index.html)
+5.[SQLite](https://www.sqlite.org/index.html)
  
-5.[SQLALchemy](https://www.sqlalchemy.org/)
+6.[SQLALchemy](https://www.sqlalchemy.org/)
  
-6.[Pandas](https://pandas.pydata.org/)
+7.[Pandas](https://pandas.pydata.org/)
  
  
 
