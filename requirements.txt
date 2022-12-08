@@ -6,7 +6,7 @@ beautifulsoup4==4.9.1
 bleach==3.3.0
 cachetools==3.1.1
 census==0.8.13
-certifi==2019.11.28
+certifi==2022.12.7
 chardet==3.0.4
 citipy==0.0.5
 click==7.1.2
